@@ -3,12 +3,15 @@ package com.lifeng;
 import com.lifeng.pojo.UserLogin;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -52,8 +55,22 @@ class Springbootch01ApplicationTests {
             System.out.println("id:" + userLogin.getId() + ";name:" + userLogin.getUserName());
 
         }
+    }
 
+    /**
+     * springboot原来的连接池
+     */
+    @Autowired
+    private DataSource dataSource;
 
+    @Test
+    public void datasourceTest() throws Exception {
+        //查看默认数据源
+        System.out.println("sssss"+dataSource.getClass());
+        //获取数据库连接
+        Connection connection = dataSource.getConnection();
+        //关闭连接
+        connection.close();
     }
 
 }

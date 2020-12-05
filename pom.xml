@@ -39,6 +39,22 @@
             <artifactId>spring-boot-starter-jdbc</artifactId>
             <version>2.3.4.RELEASE</version>
         </dependency>
+        <!--druid连接池配置-->
+        <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        <!--druid与Springboot集成-->
+        <!-- https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.1.10</version>
+        </dependency>
+
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
