@@ -13,6 +13,8 @@ import java.util.List;
  * @author fengli
  * @version 1.0
  * @date 2020/12/05
+ * JpaRepositorγ 接口是不开启事务的，而
+ * SimpleJapRepository 默认是开启事务的
  */
 @Repository
 public interface UserRespository extends JpaRepository<UserLogin, String> {

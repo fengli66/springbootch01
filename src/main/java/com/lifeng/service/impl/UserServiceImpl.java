@@ -6,6 +6,8 @@ import com.lifeng.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Collection;
@@ -19,6 +21,8 @@ import java.util.Optional;
  * @version 1.0
  * @date 2020/12/05
  */
+//@Transactional 注解在类上,就意味着的所有public法都是开启事务
+@Transactional
 @Service
 public class UserServiceImpl implements UserService {
     @Resource
@@ -34,9 +38,15 @@ public class UserServiceImpl implements UserService {
         return userRespository.findAll();
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public UserLogin save(UserLogin user) {
-        return userRespository.save(user);
+        System.out.println("ssss");
+        UserLogin save = userRespository.save(user);
+        //出现空指针异常
+        String error = null;
+        error.equals("/");
+        return save;
     }
 
     @Override

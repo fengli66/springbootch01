@@ -2,6 +2,7 @@ package com.lifeng;
 
 import com.lifeng.pojo.UserLogin;
 import com.lifeng.repository.UserRespository;
+import com.lifeng.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +72,7 @@ class Springbootch01ApplicationTests {
     @Test
     public void datasourceTest() throws Exception {
         //查看默认数据源
-        System.out.println("sssss"+dataSource.getClass());
+        System.out.println("sssss" + dataSource.getClass());
         //获取数据库连接
         Connection connection = dataSource.getConnection();
         //关闭连接
@@ -80,38 +81,45 @@ class Springbootch01ApplicationTests {
 
     @Resource
     private UserRespository userRespository;
+
+    @Resource
+    private UserService userService;
     @Test
-    public void testRepsitory(){
+    public void testRepsitory() {
         //查询所有数据
         List<UserLogin> userList = userRespository.findAll();
-        System.out.println("findAll():"+userList.size());
+        System.out.println("findAll():" + userList.size());
         //通过姓名查询
         List<UserLogin> users = userRespository.findByUsername("lifeng");
-        System.out.println("findByName():"+users.size());
-        Assert.isTrue(users.get(0).getUsername().equals("lifeng"),"data error");
+        System.out.println("findByName():" + users.size());
+        Assert.isTrue(users.get(0).getUsername().equals("lifeng"), "data error");
         //通过name模糊查询
         List<UserLogin> nameLike = userRespository.findByUsernameLike("%fen%");
-        System.out.println("findByUserNameLike():"+nameLike.size());
-        Assert.isTrue(nameLike.get(0).getUsername().equals("lifeng"),"data error");
+        System.out.println("findByUserNameLike():" + nameLike.size());
+        Assert.isTrue(nameLike.get(0).getUsername().equals("lifeng"), "data error");
         //通过id列表查询数据
-        List<String> ids=new ArrayList<>();
+        List<String> ids = new ArrayList<>();
         ids.add("1");
         ids.add("2");
         List<UserLogin> users1 = userRespository.findByUserIDIn(ids);
-        System.out.println("findByIdIn():"+users1.size());
+        System.out.println("findByIdIn():" + users1.size());
         //分页查询
 //        Sort sort = Sort.by(Sort.Direction.DESC, "blogs.size");
-        PageRequest pageRequest=PageRequest.of(0,10);
+        PageRequest pageRequest = PageRequest.of(0, 10);
         Page<UserLogin> userPage = userRespository.findAll(pageRequest);
-        System.out.println("page findAll():"+userPage.getTotalPages()+"/"+userPage.getSize());
+        System.out.println("page findAll():" + userPage.getTotalPages() + "/" + userPage.getSize());
         //新增数据
-        UserLogin user=new UserLogin("2","test","123456");
+        UserLogin user = new UserLogin("2", "test", "123456");
         UserLogin save = userRespository.save(user);
-        System.out.println("save"+save);
+        System.out.println("save" + save);
         //删除数据
 //        userRespository.delete(user);
+    }
 
-
+    @Test
+    public void testTransaction() {
+        UserLogin userLogin = new UserLogin("7", "132", "123456");
+        userService.save(userLogin);
     }
 
 }
