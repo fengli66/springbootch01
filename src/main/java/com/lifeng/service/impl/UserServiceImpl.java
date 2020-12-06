@@ -41,11 +41,11 @@ public class UserServiceImpl implements UserService {
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public UserLogin save(UserLogin user) {
-        System.out.println("ssss");
+
         UserLogin save = userRespository.save(user);
         //出现空指针异常
-        String error = null;
-        error.equals("/");
+       /* String error = null;
+        error.equals("/");*/
         return save;
     }
 
