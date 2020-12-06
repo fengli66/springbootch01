@@ -1,6 +1,6 @@
 package com.lifeng.service.impl;
 
-import com.lifeng.pojo.User;
+import com.lifeng.pojo.UserLogin;
 import com.lifeng.repository.UserRespository;
 import com.lifeng.service.UserService;
 import org.springframework.data.domain.Page;
@@ -25,42 +25,42 @@ public class UserServiceImpl implements UserService {
     private UserRespository userRespository;
 
     @Override
-    public Optional<User> findById(String id) {
+    public Optional<UserLogin> findById(String id) {
         return userRespository.findById(id);
     }
 
     @Override
-    public List<User> findAll() {
+    public List<UserLogin> findAll() {
         return userRespository.findAll();
     }
 
     @Override
-    public User save(User user) {
+    public UserLogin save(UserLogin user) {
         return userRespository.save(user);
     }
 
     @Override
-    public void delete(User user) {
+    public void delete(UserLogin user) {
         userRespository.delete(user);
     }
 
     @Override
-    public Page<User> findAll(Pageable pageable) {
+    public Page<UserLogin> findAll(Pageable pageable) {
         return userRespository.findAll(pageable);
     }
 
     @Override
-    public List<User> findByName(String name) {
+    public List<UserLogin> findByName(String name) {
         return userRespository.findByUsername(name);
     }
 
     @Override
-    public List<User> findByUserNameLike(String name) {
+    public List<UserLogin> findByUserNameLike(String name) {
         return userRespository.findByUsernameLike(name);
     }
 
     @Override
-    public List<User> findByIdIn(Collection<String> ids) {
+    public List<UserLogin> findByIdIn(Collection<String> ids) {
         return userRespository.findByUserIDIn(ids);
     }
 }

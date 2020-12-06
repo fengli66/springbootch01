@@ -1,6 +1,6 @@
 package com.lifeng.service;
 
-import com.lifeng.pojo.User;
+import com.lifeng.pojo.UserLogin;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,26 +15,26 @@ import java.util.Optional;
  * @date 2020/12/05
  */
 public interface UserService {
-    Optional<User> findById(String id);
-    List<User> findAll();
-    User save(User user);
-    void delete(User user);
+    Optional<UserLogin> findById(String id);
+    List<UserLogin> findAll();
+    UserLogin save(UserLogin user);
+    void delete(UserLogin user);
     //分页
-    Page<User> findAll(Pageable pageable);
+    Page<UserLogin> findAll(Pageable pageable);
     /**
      * 通过名字查询用户信息
      */
-    List<User> findByName(String name);
+    List<UserLogin> findByName(String name);
     /**
      * 通过名字like查询，参数为name
      *
      */
-    List<User> findByUserNameLike(String name);
+    List<UserLogin> findByUserNameLike(String name);
 
     /**
      * 通过主键id集合查询，参数为id集合
      * @param ids
      * @return
      */
-    List<User> findByIdIn(Collection<String> ids);
+    List<UserLogin> findByIdIn(Collection<String> ids);
 }

@@ -1,6 +1,6 @@
 package com.lifeng;
 
-import com.lifeng.pojo.User;
+import com.lifeng.pojo.UserLogin;
 import com.lifeng.repository.UserRespository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -46,19 +45,19 @@ class Springbootch01ApplicationTests {
     public void mySqlTest() {
         String sql = "SELECT userid,username,password FROM userlogin";
         //RowMapper 可以将查询出的每 行数据封装成用户定义的类
-        List<User> users = jdbcTemplate.query(sql, new RowMapper<User>() {
+        List<UserLogin> users = jdbcTemplate.query(sql, new RowMapper<UserLogin>() {
             @Override
-            public User mapRow(ResultSet resultSet, int i) throws SQLException {
-                User user = new User();
+            public UserLogin mapRow(ResultSet resultSet, int i) throws SQLException {
+                UserLogin user = new UserLogin();
                 user.setUserID(resultSet.getString("userID"));
-                user.setUserName(resultSet.getString("userName"));
+                user.setUsername(resultSet.getString("userName"));
                 user.setPassword(resultSet.getString("password"));
                 return user;
             }
         });
         System.out.println("查询成功");
-        for (User user : users) {
-            System.out.println("id:" + user.getUserID() + ";name:" + user.getUserName());
+        for (UserLogin user : users) {
+            System.out.println("id:" + user.getUserID() + ";name:" + user.getUsername());
 
         }
     }
@@ -84,30 +83,30 @@ class Springbootch01ApplicationTests {
     @Test
     public void testRepsitory(){
         //查询所有数据
-        List<User> userList = userRespository.findAll();
+        List<UserLogin> userList = userRespository.findAll();
         System.out.println("findAll():"+userList.size());
         //通过姓名查询
-        List<User> users = userRespository.findByUsername("lifeng");
+        List<UserLogin> users = userRespository.findByUsername("lifeng");
         System.out.println("findByName():"+users.size());
-        Assert.isTrue(users.get(0).getUserName().equals("lifeng"),"data error");
+        Assert.isTrue(users.get(0).getUsername().equals("lifeng"),"data error");
         //通过name模糊查询
-        List<User> nameLike = userRespository.findByUsernameLike("%fen%");
+        List<UserLogin> nameLike = userRespository.findByUsernameLike("%fen%");
         System.out.println("findByUserNameLike():"+nameLike.size());
-        Assert.isTrue(nameLike.get(0).getUserName().equals("lifeng"),"data error");
+        Assert.isTrue(nameLike.get(0).getUsername().equals("lifeng"),"data error");
         //通过id列表查询数据
         List<String> ids=new ArrayList<>();
         ids.add("1");
         ids.add("2");
-        List<User> users1 = userRespository.findByUserIDIn(ids);
+        List<UserLogin> users1 = userRespository.findByUserIDIn(ids);
         System.out.println("findByIdIn():"+users1.size());
         //分页查询
 //        Sort sort = Sort.by(Sort.Direction.DESC, "blogs.size");
         PageRequest pageRequest=PageRequest.of(0,10);
-        Page<User> userPage = userRespository.findAll(pageRequest);
+        Page<UserLogin> userPage = userRespository.findAll(pageRequest);
         System.out.println("page findAll():"+userPage.getTotalPages()+"/"+userPage.getSize());
         //新增数据
-        User user=new User("2","test","123456");
-        User save = userRespository.save(user);
+        UserLogin user=new UserLogin("2","test","123456");
+        UserLogin save = userRespository.save(user);
         System.out.println("save"+save);
         //删除数据
 //        userRespository.delete(user);

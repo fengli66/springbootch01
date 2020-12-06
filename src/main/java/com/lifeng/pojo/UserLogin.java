@@ -11,18 +11,18 @@ import javax.persistence.Table;
  * @version 1.0
  * @date 2020/12/05
  */
-@Table(name = "userlogin")
+//@Table(name = "userlogin")
 @Entity
-public class User {
+public class UserLogin {
     @Id
     private String userID;//主键ID
     private String username;//用户名
     private String password;//密码
 
-    public User() {
+    public UserLogin() {
     }
 
-    public User(String userID, String username, String password) {
+    public UserLogin(String userID, String username, String password) {
         this.userID = userID;
         this.username = username;
         this.password = password;
@@ -36,11 +36,11 @@ public class User {
         this.userID = userID;
     }
 
-    public String getUserName() {
+    public String getUsername() {
         return username;
     }
 
-    public void setUserName(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
