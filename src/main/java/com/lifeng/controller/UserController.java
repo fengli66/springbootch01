@@ -21,6 +21,8 @@ public class UserController {
         //查询所有用户信息
         System.out.println("ssss");
         List<UserLogin> userList = userService.findAll();
+//        UserLogin one = userService.findOne("4");
+//        System.out.println("one:"+one);
         model.addAttribute("users",userList);
         return "userinfo";
     }

@@ -5,6 +5,7 @@ import com.lifeng.repository.UserRespository;
 import com.lifeng.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,10 +28,35 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     @Resource
     private UserRespository userRespository;
+    @Resource
+    private RedisTemplate redisTemplate;
+    private static final String ALL_USER="ALL_USER_LIST";
 
+    /**
+     * 根据id查询用户信息
+     * 1、查询redis缓存中的所有数据
+     * @param id
+     * @return
+     */
     @Override
-    public Optional<UserLogin> findById(String id) {
-        return userRespository.findById(id);
+    public UserLogin findById(String id) {
+        //step.1 查询Redis缓存中的所有数据
+        System.out.println("Ssss");
+        List<UserLogin> userLodins = redisTemplate.opsForList().range(ALL_USER, 0, -1);
+        if (userLodins != null && userLodins.size()>0) {
+            for (UserLogin userLogin : userLodins) {
+                if (userLogin.getUserID().equals(id)){
+                    return userLogin;
+                }
+            }
+        }
+//        step2查询数据库的数据
+        UserLogin userLogin = userRespository.findById(id).get();
+        if (userLogin != null) {
+            redisTemplate.opsForList().leftPush(ALL_USER,userLogin);
+        }
+        return userLogin;
+
     }
 
     @Override
@@ -73,4 +99,9 @@ public class UserServiceImpl implements UserService {
     public List<UserLogin> findByIdIn(Collection<String> ids) {
         return userRespository.findByUserIDIn(ids);
     }
+
+   /* @Override
+    public UserLogin findOne(String id) {
+        return userRespository.findOne(id);
+    }*/
 }

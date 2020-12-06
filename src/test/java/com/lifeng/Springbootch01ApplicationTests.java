@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -84,6 +86,10 @@ class Springbootch01ApplicationTests {
 
     @Resource
     private UserService userService;
+
+    /**
+     * 数据库操作相关测试
+     */
     @Test
     public void testRepsitory() {
         //查询所有数据
@@ -116,10 +122,65 @@ class Springbootch01ApplicationTests {
 //        userRespository.delete(user);
     }
 
+    /**
+     * 事务测试
+     */
     @Test
     public void testTransaction() {
         UserLogin userLogin = new UserLogin("7", "132", "123456");
         userService.save(userLogin);
+    }
+
+    @Resource
+    private RedisTemplate redisTemplate;
+    @Resource
+    private StringRedisTemplate stringRedisTemplate; //StringRedisTemplate 只针对键值是字符串数据进行操作
+
+    /**
+     * redis测试
+     */
+    @Test
+    public void testRedis(){
+        //增 key:name, value:ay
+        redisTemplate.opsForValue().set("name","lifeng");
+        String name = (String) redisTemplate.opsForValue().get("name");
+        System.out.println("setname:"+name);
+        //删除
+        redisTemplate.delete("name");
+        String delname = (String) redisTemplate.opsForValue().get("name");
+        System.out.println("delname:"+delname);
+        //更新
+        redisTemplate.opsForValue().set("name","lifeng2");
+        String updetename = (String) redisTemplate.opsForValue().get("name");
+        System.out.println("updetename:"+updetename);
+        //查询
+        String searchname = stringRedisTemplate.opsForValue().get("name");
+        System.out.println("searchname:"+searchname);
+
+    }
+
+    /**
+     * redis+springboot
+     */
+    @Test
+    public void testFindById(){
+        Long redisUserSize=0L;
+        //查询id=3 的数据，该数据存在于Redis缓存中
+        UserLogin userLogin=userService.findById("6");
+        redisUserSize=redisTemplate.opsForList().size("ALL_USER_LIST");
+        System.out.println("目前缓存中的用户数量为："+redisUserSize);
+        System.out.println("------>>>id:"+userLogin.getUserID()+"name:"+userLogin.getUsername());
+        //查询id=4
+        UserLogin userLogin1=userService.findById("4");
+        redisUserSize=redisTemplate.opsForList().size("ALL_USER_LIST");
+        System.out.println("目前缓存中的用户数量为："+redisUserSize);
+        System.out.println("------>>>id:"+userLogin1.getUserID()+"name:"+userLogin1.getUsername());
+        //查询id=7 的数据，不存在redis缓存中，存在数据库中
+        //所以会把在数据库中查询的数据更新到缓存中
+        UserLogin userLogin2=userService.findById("7");
+        System.out.println("------>>>id:"+userLogin2.getUserID()+"name:"+userLogin2.getUsername());
+        redisUserSize=redisTemplate.opsForList().size("ALL_USER_LIST");
+        System.out.println("目前缓存中的用户数量为："+redisUserSize);
     }
 
 }

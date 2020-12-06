@@ -16,8 +16,6 @@ import javax.annotation.Resource;
 @SpringBootApplication      //项目启动注解
 @ServletComponentScan   //：使用该注解后， Servlet Filter Listener 可以直接通过＠WebServlet @WebFilter、＠WebListener 自动注册，无须其他代码
 public class Springbootch01Application {
-    @Resource
-    private UserRespository userRespository;
 
     public static void main(String[] args) {
         //程序开始运行的方法

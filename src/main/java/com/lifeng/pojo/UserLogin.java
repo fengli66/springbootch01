@@ -3,6 +3,7 @@ package com.lifeng.pojo;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 
 /**
@@ -13,7 +14,7 @@ import javax.persistence.Table;
  */
 //@Table(name = "userlogin")
 @Entity
-public class UserLogin {
+public class UserLogin implements Serializable {
     @Id
     private String userID;//主键ID
     private String username;//用户名

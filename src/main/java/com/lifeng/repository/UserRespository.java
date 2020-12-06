@@ -18,18 +18,22 @@ import java.util.List;
  */
 @Repository
 public interface UserRespository extends JpaRepository<UserLogin, String> {
+
+//    UserLogin findOne(String id);
+
     /**
      * 通过名字查询用户信息
      */
     List<UserLogin> findByUsername(String username);
+
     /**
      * 通过名字like查询，参数为name
-     *
      */
     List<UserLogin> findByUsernameLike(String name);
 
     /**
      * 通过主键id集合查询，参数为id集合
+     *
      * @param ids
      * @return
      */
