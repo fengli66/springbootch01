@@ -3,6 +3,8 @@ package com.lifeng;
 import com.lifeng.pojo.UserLogin;
 import com.lifeng.repository.UserRespository;
 import com.lifeng.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -183,4 +185,16 @@ class Springbootch01ApplicationTests {
         System.out.println("目前缓存中的用户数量为："+redisUserSize);
     }
 
+    /**
+     * log4j测试
+     *
+     */
+    @Test
+    public void testLog4j(){
+        Logger logger= LogManager.getLogger(this.getClass());
+        UserLogin userLogin=new UserLogin("7",null,null);
+        userService.delete(userLogin);
+        logger.info("delete success!!!");
+
+    }
 }

@@ -3,6 +3,8 @@ package com.lifeng.service.impl;
 import com.lifeng.pojo.UserLogin;
 import com.lifeng.repository.UserRespository;
 import com.lifeng.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -32,6 +34,7 @@ public class UserServiceImpl implements UserService {
     private RedisTemplate redisTemplate;
     private static final String ALL_USER="ALL_USER_LIST";
 
+    Logger logger= LogManager.getLogger(this.getClass());
     /**
      * 根据id查询用户信息
      * 1、查询redis缓存中的所有数据
@@ -78,6 +81,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(UserLogin user) {
         userRespository.delete(user);
+        logger.info("userId:"+user.getUserID()+"用户被删除");
+
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.lifeng.listener;
 
 import com.lifeng.pojo.UserLogin;
 import com.lifeng.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
@@ -12,9 +14,10 @@ import java.util.List;
 
 /**
  * 监听器 监听对象的创建与销毁
+ *
  * @author fengli
- * @date 2020/12/06
  * @version 1.0
+ * @date 2020/12/06
  */
 @WebListener //：用于将一个类声明为监听器
 public class UserLoginListener implements ServletContextListener {
@@ -22,25 +25,30 @@ public class UserLoginListener implements ServletContextListener {
     private UserService userService;
     @Resource
     private RedisTemplate redisTemplate;
-    private static final String ALL_USER="ALL_USER_LIST";
+    private static final String ALL_USER = "ALL_USER_LIST";
+
+    Logger logger = LogManager.getLogger(this.getClass());
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        System.out.println("ServletContext 上下文初始化");
+//        System.out.println("ServletContext 上下文初始化");
         //查询数据库所有的用户
         List<UserLogin> userLogins = userService.findAll();
         //清除缓存中的用户
         redisTemplate.delete(ALL_USER);
         //将数据存放到redis中
-        redisTemplate.opsForList().leftPushAll(ALL_USER,userLogins);
+        redisTemplate.opsForList().leftPushAll(ALL_USER, userLogins);
         //在真实项目中需要注释掉，查询所有的用户数据
         List<UserLogin> userLoginList = redisTemplate.opsForList().range(ALL_USER, 0, -1);
-        System.out.println("缓存中的目前用户数有："+userLoginList.size()+" 人");
-        
+//        System.out.println("缓存中的目前用户数有：" + userLoginList.size() + " 人");
+        logger.info("ServletContext 上下文初始化");
+        logger.info("缓存中的目前用户数有：" + userLoginList.size() + " 人");
+
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        System.out.println("ServletContext 上下文销毁");
+//        System.out.println("ServletContext 上下文销毁");
+        logger.info("ServletContext 上下文销毁");
     }
 }
