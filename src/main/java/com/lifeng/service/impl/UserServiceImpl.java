@@ -1,5 +1,6 @@
 package com.lifeng.service.impl;
 
+import com.lifeng.dao.UserLoginDao;
 import com.lifeng.pojo.UserLogin;
 import com.lifeng.repository.UserRespository;
 import com.lifeng.service.UserService;
@@ -35,6 +36,14 @@ public class UserServiceImpl implements UserService {
     private static final String ALL_USER="ALL_USER_LIST";
 
     Logger logger= LogManager.getLogger(this.getClass());
+
+    @Resource
+    private UserLoginDao userLoginDao;
+    @Override
+    public UserLogin findByNameAndPassword(String username, String password) {
+        return userLoginDao.findByNameAndPassword(username,password);
+    }
+
     /**
      * 根据id查询用户信息
      * 1、查询redis缓存中的所有数据

@@ -1,5 +1,6 @@
 package com.lifeng;
 
+import com.lifeng.dao.UserLoginDao;
 import com.lifeng.pojo.UserLogin;
 import com.lifeng.repository.UserRespository;
 import com.lifeng.service.UserService;
@@ -196,5 +197,20 @@ class Springbootch01ApplicationTests {
         userService.delete(userLogin);
         logger.info("delete success!!!");
 
+    }
+
+
+    /**
+     * mybatis测试
+     */
+    @Test
+    public void testMybatis(){
+        UserLogin userLogin = userService.findByNameAndPassword("132", "123456");
+        Logger logger= LogManager.getLogger(this.getClass());
+        if (userLogin != null) {
+            logger.info("用户"+userLogin.getUsername()+userLogin.getPassword());
+        }else {
+            logger.info("没有该用户");
+        }
     }
 }

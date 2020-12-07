@@ -10,7 +10,6 @@
                      filePattern="F:/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
             <Filters>
                 <ThresholdFilter level="INFO"/>
-
             </Filters>
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %1 - %m%n"/>
             <Policies>
@@ -20,7 +19,7 @@
         </RollingFile>
     </appenders>
     <loggers>
-        <root level="all">
+        <root level="info">
             <appender-ref ref="Console"/>
             <appender-ref ref="RollingFileInfo"/>
         </root>

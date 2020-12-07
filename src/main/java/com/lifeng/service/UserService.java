@@ -16,6 +16,8 @@ import java.util.Optional;
  * @date 2020/12/05
  */
 public interface UserService {
+
+    UserLogin findByNameAndPassword(String username,String password);
     UserLogin findById(String id);
 
     List<UserLogin> findAll();
